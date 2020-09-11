@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:geolocator/geolocator.dart';
@@ -13,8 +11,10 @@ class MapScreen extends StatefulWidget {
 class _MapScreenState extends State<MapScreen> {
   GoogleMapController _mapController;
   Location _location = Location();
-  //Position _position;
+  Set<Marker> _markers = Set<Marker>();
+  var lat = 0.0;
 
+  //Position _position;
   // void _getCurrentLocation() async {
   //   _position =
   //       await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
@@ -30,6 +30,16 @@ class _MapScreenState extends State<MapScreen> {
   void _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
     _location.onLocationChanged.listen((locationData) {
+      setState(() {
+        _markers.add(
+          Marker(
+            markerId: MarkerId("home"),
+            position: LatLng(locationData.latitude, locationData.longitude),
+            icon: BitmapDescriptor.defaultMarker,
+          ),
+        );
+      });
+
       _mapController.animateCamera(
         CameraUpdate.newCameraPosition(
           CameraPosition(
@@ -51,6 +61,7 @@ class _MapScreenState extends State<MapScreen> {
             mapType: MapType.normal,
             onMapCreated: _onMapCreated,
             myLocationEnabled: true,
+            markers: _markers,
           ),
         ],
       ),
