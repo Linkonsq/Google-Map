@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
+//import 'package:geolocator/geolocator.dart';
+import 'package:location/location.dart';
 
 class MapScreen extends StatefulWidget {
   @override
@@ -8,40 +11,48 @@ class MapScreen extends StatefulWidget {
 }
 
 class _MapScreenState extends State<MapScreen> {
-  GoogleMapController mapController;
-  Position _position;
+  GoogleMapController _mapController;
+  Location _location = Location();
+  //Position _position;
 
-  @override
-  void initState() {
-    _getCurrentLocation();
-    super.initState();
-  }
+  // void _getCurrentLocation() async {
+  //   _position =
+  //       await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+  //   print("location: " + _position.latitude.toString());
+  //   print("location: " + _position.longitude.toString());
+  // }
 
-  void _getCurrentLocation() async {
-    _position =
-        await getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print("location" + _position.latitude.toString());
-    print("location" + _position.longitude.toString());
-  }
-
-  final _center = const LatLng(24.1024549, 90.1657823);
+  static final CameraPosition _myLocation = CameraPosition(
+    target: LatLng(37.4219983, -122.084),
+    zoom: 11.0,
+  );
 
   void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
+    _mapController = controller;
+    _location.onLocationChanged.listen((locationData) {
+      _mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(locationData.latitude, locationData.longitude),
+            zoom: 11.0,
+          ),
+        ),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Google Map'),
-      ),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 11.0,
-        ),
+      body: Stack(
+        children: [
+          GoogleMap(
+            initialCameraPosition: _myLocation,
+            mapType: MapType.normal,
+            onMapCreated: _onMapCreated,
+            myLocationEnabled: true,
+          ),
+        ],
       ),
     );
   }
