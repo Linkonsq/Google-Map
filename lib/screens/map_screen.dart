@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_map/modals/user_input.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 //import 'package:geolocator/geolocator.dart';
 import 'package:location/location.dart';
@@ -12,7 +13,6 @@ class _MapScreenState extends State<MapScreen> {
   GoogleMapController _mapController;
   Location _location = Location();
   Set<Marker> _markers = Set<Marker>();
-  var lat = 0.0;
 
   //Position _position;
   // void _getCurrentLocation() async {
@@ -22,8 +22,17 @@ class _MapScreenState extends State<MapScreen> {
   //   print("location: " + _position.longitude.toString());
   // }
 
+  void _openModal(BuildContext ctx, double latitude, double longitude) {
+    showModalBottomSheet(
+      context: ctx,
+      builder: (_) {
+        return UserInput(latitude, longitude);
+      },
+    );
+  }
+
   static final CameraPosition _myLocation = CameraPosition(
-    target: LatLng(37.4219983, -122.084),
+    target: LatLng(23.810331, 90.412521),
     zoom: 11.0,
   );
 
@@ -33,9 +42,12 @@ class _MapScreenState extends State<MapScreen> {
       setState(() {
         _markers.add(
           Marker(
+            draggable: false,
             markerId: MarkerId("home"),
             position: LatLng(locationData.latitude, locationData.longitude),
             icon: BitmapDescriptor.defaultMarker,
+            onTap: () => _openModal(
+                context, locationData.latitude, locationData.longitude),
           ),
         );
       });
