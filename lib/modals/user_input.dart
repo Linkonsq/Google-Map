@@ -45,9 +45,13 @@ class _UserInputState extends State<UserInput> {
       return;
     }
 
+    print("////////////////////////////////");
+
     print("Name is: $enteredName");
     print("Latitude is: $enteredLatitude");
     print("Longitude is: $enteredLongitude");
+
+    print("////////////////////////////////");
 
     Navigator.of(context).pop();
   }
