@@ -17,39 +17,31 @@ class _UserInputState extends State<UserInput> {
 
   _UserInputState(this.latitude, this.longitude);
 
-  final _nameController = TextEditingController();
-  final _latitudeController = TextEditingController();
-  final _longitudeController = TextEditingController();
+  final _laLongController = TextEditingController();
+  final _nameController = TextEditingController(text: "Linkon Siddique");
 
   @override
   void initState() {
-    _latitudeController.text = "$latitude";
-    _longitudeController.text = "$longitude";
+    _laLongController.text = "$latitude, $longitude";
     super.initState();
   }
 
   void _submitData() {
+    final enteredLatLong = _laLongController.text;
     final enteredName = _nameController.text;
-    final enteredLatitude = _latitudeController.text;
-    final enteredLongitude = _longitudeController.text;
 
     if (enteredName.isEmpty) {
       return;
     }
 
-    if (_latitudeController.text.isEmpty) {
-      return;
-    }
-
-    if (_longitudeController.text.isEmpty) {
+    if (_laLongController.text.isEmpty) {
       return;
     }
 
     print("////////////////////////////////");
 
+    print("Latitude, Longitude are: $enteredLatLong");
     print("Name is: $enteredName");
-    print("Latitude is: $enteredLatitude");
-    print("Longitude is: $enteredLongitude");
 
     print("////////////////////////////////");
 
@@ -71,18 +63,13 @@ class _UserInputState extends State<UserInput> {
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
               TextField(
-                decoration: InputDecoration(labelText: 'Your Name'),
+                decoration: InputDecoration(labelText: 'Latitude, Longitude'),
+                controller: _laLongController,
+                keyboardType: TextInputType.number,
+              ),
+              TextField(
+                decoration: InputDecoration(labelText: 'Name'),
                 controller: _nameController,
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Latitude'),
-                controller: _latitudeController,
-                keyboardType: TextInputType.number,
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Longitude'),
-                controller: _longitudeController,
-                keyboardType: TextInputType.number,
               ),
               RaisedButton(
                 child: Text('Print to Console'),
