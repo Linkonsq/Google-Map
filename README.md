@@ -8,4 +8,4 @@ A new Flutter application to implement google map and show device's current loca
 - Show current location with latitude and longitude
 - Open modal on current location's marker click
 - Print modal information on console
-- The experience will be good if running on physical device instead of emulator
+- The experience will be better if running on physical device instead of emulator
