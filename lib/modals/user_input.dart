@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 class UserInput extends StatefulWidget {
   final double latitude;
@@ -74,7 +73,7 @@ class _UserInputState extends State<UserInput> {
               RaisedButton(
                 child: Text('Print to Console'),
                 color: Theme.of(context).primaryColor,
-                textColor: Colors.white70,
+                textColor: Colors.white,
                 onPressed: _submitData,
               )
             ],
